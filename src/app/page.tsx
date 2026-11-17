@@ -1,42 +1,101 @@
+import Navbar from "./components/Navbar";
+import Category from "./components/Category";
+
+const categories = [
+  {
+    id: 1,
+    name: "Momo",
+    url: "/momo2.jfif",
+  },
+  {
+    id: 2,
+    name: "Thakali Khana",
+    url: "/khana.jfif",
+  },
+  {
+    id: 3,
+    name: "Noodles",
+    url: "/noodles.jfif",
+  },
+  {
+    id: 4,
+    name: "Newari Khaja Set",
+    url: "/khaja.jfif",
+  },
+  {
+    id: 5,
+    name: "Pizza",
+    url: "/pizza.jfif",
+  },
+  {
+    id: 6,
+    name: "Keema Noodles",
+    url: "",
+  },
+  {
+    id: 7,
+    name: "Tea",
+    url: "",
+  },
+  {
+    id: 8,
+    name: "Sekuwa",
+    url: "",
+  },
+  {
+    id: 9,
+    name: "Biryani",
+    url: "",
+  },
+  {
+    id: 10,
+    name: "Desserts",
+    url: "",
+  },
+];
+
 export default function Home() {
   return (
     <div>
-      <main>
-        <div className="min-h-screen w-full bg-[#fcfaf7] flex flex-col items-center justify-center">
-          <div className="pt-20">
-            <div className="relative min-h-[100px]">
-              <img
-                src="./keema.png"
-                alt=""
-                className="w-24 absolute top-10 left-[10%] rotate-[-12deg]"
-              />
-              <img
-                src="./momo.png"
-                alt=""
-                className="w-24 absolute top-2 right-[30%] rotate-[10deg]"
-              />
-              <img
-                src="./tiramisu.png"
-                alt=""
-                className="w-24 absolute top-15 right-[10%] rotate-[14deg]"
-              />
-            </div>
-            <h1 className="text-5xl font-extrabold text-center leading-tight bg-linear-to-r from-[#F26A2C] to-[#FFf7ef] bg-clip-text text-transparent text-shadow-sm">
-              <span className="block">THE FOOD'S</span>{" "}
-              <span className="block">AT YOUR SERVICE</span>
+      <main className="relative h-screen w-full bg-[url('/backgroundTable.png')] bg-cover bg-center bg-no-repeat">
+        <Navbar />
+        <div className="flex">
+          <div className="flex-1">
+            <h1 className="text-white font-bold text-6xl">
+              Food at your pace.Dine In or Out at your Comfort
             </h1>
-            <div className="pt-16 flex gap-4 justify-center">
-              <button className="px-8 py-2 bg-[#f26a2c] rounded-2xl">
-                Explore Food
-              </button>
-              <button className="px-8 py-2 bg-[#fff7ef] rounded-2xl">
-                Find a Restaurant
-              </button>
-            </div>
+            <input
+              type="text"
+              placeholder="Search Food or Restaurant"
+              className="bg-white py-4 px-4 rounded-xl"
+            />
+          </div>
+          <div className="relative flex-1">
+            <img src="thakali_khana.png" alt="" className="absolute" />
+            <img src="/momo.png" alt="" className="absolute" />
+            <img src="/omelet.png" alt="" className="absolute" />
           </div>
         </div>
-        <div className="h-70 w-full bg-blue-50"></div>
       </main>
+      <section className="py-16">
+        <div>
+          <h2 className="text-center font-bold pb-4 text-3xl">
+            Choose a Category
+          </h2>
+          <div className="flex gap-6 flex-wrap w-full border-box items-center justify-center">
+            {categories.map((category) => (
+              <Category
+                key={category.id}
+                name={category.name}
+                url={category.url}
+              />
+            ))}
+          </div>
+          <button className="bg-red-200 rounded-xl px-4 py-2 ">
+            View More
+          </button>
+        </div>
+      </section>
     </div>
   );
 }
