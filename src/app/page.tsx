@@ -2,6 +2,7 @@ import Navbar from "./components/Navbar";
 import Category from "./components/Category";
 import RestroCard from "./components/RestaurantCard";
 import FoodItemCard from "./components/FoodItemCard";
+import Footer from "./components/Footer";
 const categories = [
   {
     id: 1,
@@ -130,6 +131,7 @@ export default function Home() {
           </button>
         </div>
       </section>
+      <Footer />
     </div>
   );
 }
