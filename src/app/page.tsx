@@ -1,7 +1,7 @@
 import Navbar from "./components/Navbar";
 import Category from "./components/Category";
 import RestroCard from "./components/RestaurantCard";
-
+import FoodItemCard from "./components/FoodItemCard";
 const categories = [
   {
     id: 1,
@@ -58,7 +58,7 @@ const categories = [
 export default function Home() {
   return (
     <div>
-      <main className="relative h-screen w-full bg-[url('/backgroundTable.png')] bg-cover bg-center bg-no-repeat">
+      <main className="relative h-screen w-full bg-[url('/backgroundTable.png')] bg-cover bg-center bg-no-repeat px-8 px-16">
         <Navbar />
         <div className="flex">
           <div className="flex-1">
@@ -78,7 +78,7 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <section className="pt-8 md:pt-16">
+      <section className="pt-8 px-8 md:pt-16 px-16">
         <div>
           <h2 className="text-center font-bold pb-4 text-3xl">
             Choose a Category
@@ -97,7 +97,7 @@ export default function Home() {
           </button>
         </div>
       </section>
-      <section className="pt-8 md:pt-16">
+      <section className="pt-8 px-8 md:pt-16 px-16">
         <h2 className="text-center font-bold pb-4 text-3xl">
           Explore the Restaurants
         </h2>
@@ -108,6 +108,27 @@ export default function Home() {
           <RestroCard />
         </div>
         <button className="bg-red-200 rounded-xl px-4 py-2 ">View More</button>
+      </section>
+      <section className="pt-8 px-8 md:pt-16 px-16">
+        <h2 className="text-center font-bold pb-4 text-3xl">
+          Popular Food Items
+        </h2>
+        <div className="flex flex-wrap gap-6">
+          <FoodItemCard />
+          <FoodItemCard />
+          <FoodItemCard />
+          <FoodItemCard />
+          <FoodItemCard />
+        </div>
+        <button className="bg-red-200 rounded-xl px-4 py-2 ">View More</button>
+      </section>
+      <section className="pt-8 px-8 md:pt-16 px-16">
+        <div className="w-full bg-black text-white py-8 px-4 flex flex-col justify-between items-center rounded-xl md:flex-row">
+          <h2 className="font-bold text-4xl">Grow With Us.</h2>
+          <button className="bg-red-200 p-4 rounded-xl mt-4 md:mt-0">
+            Register Your Business
+          </button>
+        </div>
       </section>
     </div>
   );
