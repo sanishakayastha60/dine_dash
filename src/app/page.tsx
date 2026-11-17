@@ -61,7 +61,7 @@ export default function Home() {
     <div>
       <main className="relative h-screen w-full bg-[url('/backgroundTable.png')] bg-cover bg-center bg-no-repeat px-8 px-16">
         <Navbar />
-        <div className="flex">
+        <div className="flex items-center min-h-screen">
           <div className="flex-1">
             <h1 className="text-white font-bold text-6xl">
               Food at your pace.Dine In or Out at your Comfort
@@ -79,12 +79,12 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <section className="pt-8 px-8 md:pt-16 px-16">
+      <section className="pt-8 px-4 md:pt-16 md:px-8">
         <div>
           <h2 className="text-center font-bold pb-4 text-3xl">
             Choose a Category
           </h2>
-          <div className="flex gap-6 flex-wrap w-full border-box items-center justify-center">
+          <div className="flex gap-6 flex-wrap w-full border-box items-center justify-center justify-between">
             {categories.map((category) => (
               <Category
                 key={category.id}
@@ -98,11 +98,11 @@ export default function Home() {
           </button>
         </div>
       </section>
-      <section className="pt-8 px-8 md:pt-16 px-16">
+      <section className="pt-8 px-4 md:pt-16 md:px-8">
         <h2 className="text-center font-bold pb-4 text-3xl">
           Explore the Restaurants
         </h2>
-        <div className="flex gap-6 flex-wrap">
+        <div className="flex justify-between gap-6 flex-wrap">
           <RestroCard />
           <RestroCard />
           <RestroCard />
@@ -110,11 +110,11 @@ export default function Home() {
         </div>
         <button className="bg-red-200 rounded-xl px-4 py-2 ">View More</button>
       </section>
-      <section className="pt-8 px-8 md:pt-16 px-16">
+      <section className="pt-8 px-4 md:pt-16 md:px-8">
         <h2 className="text-center font-bold pb-4 text-3xl">
           Popular Food Items
         </h2>
-        <div className="flex flex-wrap gap-6">
+        <div className="flex flex-wrap justify-between gap-6">
           <FoodItemCard />
           <FoodItemCard />
           <FoodItemCard />
@@ -123,7 +123,7 @@ export default function Home() {
         </div>
         <button className="bg-red-200 rounded-xl px-4 py-2 ">View More</button>
       </section>
-      <section className="pt-8 px-8 md:pt-16 px-16">
+      <section className="py-8 px-4 md:py-16 md:px-8">
         <div className="w-full bg-black text-white py-8 px-4 flex flex-col justify-between items-center rounded-xl md:flex-row">
           <h2 className="font-bold text-4xl">Grow With Us.</h2>
           <button className="bg-red-200 p-4 rounded-xl mt-4 md:mt-0">
