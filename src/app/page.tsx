@@ -1,5 +1,6 @@
 import Navbar from "./components/Navbar";
 import Category from "./components/Category";
+import RestroCard from "./components/RestaurantCard";
 
 const categories = [
   {
@@ -77,7 +78,7 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <section className="py-16">
+      <section className="pt-8 md:pt-16">
         <div>
           <h2 className="text-center font-bold pb-4 text-3xl">
             Choose a Category
@@ -95,6 +96,18 @@ export default function Home() {
             View More
           </button>
         </div>
+      </section>
+      <section className="pt-8 md:pt-16">
+        <h2 className="text-center font-bold pb-4 text-3xl">
+          Explore the Restaurants
+        </h2>
+        <div className="flex gap-6 flex-wrap">
+          <RestroCard />
+          <RestroCard />
+          <RestroCard />
+          <RestroCard />
+        </div>
+        <button className="bg-red-200 rounded-xl px-4 py-2 ">View More</button>
       </section>
     </div>
   );
