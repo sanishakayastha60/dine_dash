@@ -11,3 +11,13 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model FoodItem{
+  id String @id @default(uuid())
+  name String 
+  description String?
+  restaurant String
+  price Int
+  category String
+  diet String
+}
