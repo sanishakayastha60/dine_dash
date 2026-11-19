@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SearchIcon from "@mui/icons-material/Search";
 export default function Navbar() {
   return (
     <div className="w-full flex justify-between px-8 py-4 z-50 fixed">
@@ -13,8 +14,10 @@ export default function Navbar() {
         <Link href="/">How It Works</Link>
       </div>
       <div className="py-2 flex gap-2">
+        <SearchIcon />
         <button>Login</button>
         <button>Sign Up</button>
+        <button>For Business</button>
       </div>
     </div>
   );
