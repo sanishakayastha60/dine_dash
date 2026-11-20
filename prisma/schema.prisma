@@ -12,12 +12,25 @@ datasource db {
   provider = "postgresql"
 }
 
-model FoodItem{
-  id String @id @default(uuid())
-  name String 
-  description String?
-  restaurant String
-  price Int
-  category String
-  diet String
+enum BusinessType{
+  RESTAURANT
+  CLOUD_KITCHEN
+  BAKERY
+  CAFE
+  OTHER
 }
+
+model BusinessInfo{
+  id String @id @default(uuid())
+  name String
+  description String?
+  address String
+  phoneNumber String @unique
+  businessType BusinessType
+  specialNotice String?
+  coverUrl String
+  logoUrl String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
