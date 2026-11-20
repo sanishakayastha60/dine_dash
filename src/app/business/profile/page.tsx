@@ -13,13 +13,13 @@ export default function BusinessProfile() {
   const [coverImageUrl, setCoverImageUrl] = useState("");
   const [logoImageUrl, setLogoImageUrl] = useState("");
   return (
-    <div className="bg-[#E3DFD3] min-h-screen w-full p-4">
+    <div className="bg-[#E3DFD3] min-h-screen w-full p-4 md:px-8">
       <h2 className="text-3xl uppercase font-bold text-[#872408] pt-6">
         Business Profile
       </h2>
       <form
         action={updateBusinessInfo}
-        className="flex flex-col gap-4 py-4 md:grid md:grid-cols-2"
+        className="flex flex-col gap-4 py-4 md:grid md:grid-cols-2 md:gap-8"
       >
         <input type="hidden" name="id" />
         <div className="flex flex-col gap-1">
