@@ -12,7 +12,7 @@ datasource db {
   provider = "postgresql"
 }
 
-enum BusinessType{
+enum BusinessType {
   RESTAURANT
   CLOUD_KITCHEN
   BAKERY
@@ -20,17 +20,63 @@ enum BusinessType{
   OTHER
 }
 
-model BusinessInfo{
-  id String @id @default(uuid())
-  name String
-  description String?
-  address String
-  phoneNumber String @unique
-  businessType BusinessType
-  specialNotice String?
-  coverUrl String
-  logoUrl String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum MenuSection {
+  RECOMMENDED
+  STARTER
+  MAIN_COURSE
+  FAST_FOOD
+  BEVERAGE
+  DESSERT
 }
 
+model BusinessInfo {
+  id            String       @id @default(uuid())
+  name          String
+  description   String?
+  address       String
+  phoneNumber   String       @unique
+  businessType  BusinessType
+  specialNotice String?
+  coverUrl      String
+  logoUrl       String
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  categories BusinessCategory[]
+}
+
+model MenuItem {
+  id            String      @id @default(uuid())
+  name          String
+  description   String?
+  price         Float
+  estimatedTime Int
+  menuSection   MenuSection
+  categoryId    String
+  imageUrl      String?
+  category      Category    @relation(fields: [categoryId], references: [id])
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String  @unique
+  description String?
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  businesses BusinessCategory[]
+  MenuItems  MenuItem[]
+}
+
+model BusinessCategory {
+  id             String       @id @default(uuid())
+  businessInfoId String
+  categoryId     String
+  businessInfo   BusinessInfo @relation(fields: [businessInfoId], references: [id], onDelete: Cascade)
+  category       Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([businessInfoId, categoryId])
+}
