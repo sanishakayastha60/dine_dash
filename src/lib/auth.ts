@@ -24,32 +24,41 @@ export const authOptions: NextAuthOptions = {
       },
 
       async authorize(credentials) {
-        const identifier = credentials?.identifier;
-        const password = credentials?.password;
+        try {
+          if (!credentials?.identifier || !credentials?.password) {
+            return null;
+          }
+          const identifier = credentials?.identifier.trim().toLowerCase;
 
-        if (typeof identifier !== "string" || typeof password !== "string") {
+          const user = await prisma.user.findFirst({
+            where: {
+              email: {
+                equals: "identifier",
+                mode: "insensitive",
+              },
+            },
+          });
+
+          if (!user) return null;
+
+          if (!user.password) return null;
+
+          const isValid = await bcrypt.compare(
+            credentials.password,
+            user.password,
+          );
+          if (!isValid) return null;
+
+          return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+          };
+        } catch (error) {
+          console.error("AUTHORIZATION ERROR:", error);
           return null;
         }
-
-        const user = await prisma.user.findFirst({
-          where: {
-            OR: [{ email: identifier }, { phone: identifier }],
-            role: "USER",
-          },
-        });
-
-        if (!user?.password) return null;
-
-        const isValid = await bcrypt.compare(password, user.password);
-
-        if (!isValid) return null;
-
-        return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-        };
       },
     }),
     CredentialsProvider({
