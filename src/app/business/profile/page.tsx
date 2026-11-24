@@ -1,4 +1,13 @@
+<<<<<<< Updated upstream
 "use client";
+=======
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import ProfileForm from "@/app/components/ProfileForm";
+import { Suspense } from "react";
+import { prisma } from "@/lib/prisma";
+>>>>>>> Stashed changes
 
 import { useState } from "react";
 import { BusinessType } from "@/generated/prisma/enums";
@@ -130,3 +139,54 @@ export default function BusinessProfile() {
     </div>
   );
 }
+<<<<<<< Updated upstream
+=======
+
+async function DashboardContent() {
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user) {
+    redirect("/business/login");
+  }
+
+  if (session.user.role !== "BUSINESS") {
+    redirect("/");
+  }
+  const business = await prisma.businessInfo.findFirst({
+    where: {
+      userId: session.user.id,
+    },
+    select: {
+      id: true,
+      name: true,
+      isVerfied: true,
+    },
+  });
+
+  if (!business) {
+    redirect("/business/businessinfo");
+  }
+
+  if (!business.isVerfied) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+        <div className="max-w-md rounded-xl bg-white p-8 text-center shadow-md">
+          <h1 className="text-2xl font-bold">Verification Pending</h1>
+
+          <p className="mt-3 text-gray-600">
+            Your business, <strong>{business.name}</strong>, has been registered
+            successfully.
+          </p>
+
+          <p className="mt-3 text-sm text-gray-500">
+            Our team is reviewing your business information. You will be able to
+            access your business dashboard once your business has been verified.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  return <ProfileForm />;
+}
+>>>>>>> Stashed changes
