@@ -12,7 +12,7 @@ datasource db {
   provider = "postgresql"
 }
 
-enum BusinessType{
+enum BusinessType {
   RESTAURANT
   CLOUD_KITCHEN
   BAKERY
@@ -20,17 +20,130 @@ enum BusinessType{
   OTHER
 }
 
-model BusinessInfo{
-  id String @id @default(uuid())
-  name String
-  description String?
-  address String
-  phoneNumber String @unique
-  businessType BusinessType
-  specialNotice String?
-  coverUrl String
-  logoUrl String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum MenuSection {
+  RECOMMENDED
+  STARTER
+  MAIN_COURSE
+  FAST_FOOD
+  BEVERAGE
+  DESSERT
 }
 
+enum Role {
+  USER
+  BUSINESS
+  SUPERADMIN
+}
+
+model User {
+  id String @id @default(uuid())
+  name String?
+  email String? @unique
+  phone String? @unique
+  emailVerified DateTime?
+  phoneVerified DateTime?
+  password String?
+  role Role @default(USER)
+
+  accounts Account[]
+  sessions Session[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  businessInfo BusinessInfo?
+}
+
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id String @id @default(cuid())
+  sessionToken String @unique
+  userId String
+  expires DateTime
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model BusinessInfo {
+  id            String       @id @default(uuid())
+  userId String @unique
+  name          String
+  description   String?
+  address       String
+  phoneNumber   String       @unique
+  businessType  BusinessType
+  specialNotice String?
+  coverUrl      String
+  logoUrl       String
+  isVerfied Boolean @default(false)
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+
+  categories BusinessCategory[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model MenuItem {
+  id            String      @id @default(uuid())
+  name          String
+  description   String?
+  price         Float
+  estimatedTime Int
+  menuSection   MenuSection
+  categoryId    String
+  imageUrl      String?
+  category      Category    @relation(fields: [categoryId], references: [id])
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String  @unique
+  description String?
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  businesses BusinessCategory[]
+  MenuItems  MenuItem[]
+}
+
+model BusinessCategory {
+  id             String       @id @default(uuid())
+  businessInfoId String
+  categoryId     String
+  businessInfo   BusinessInfo @relation(fields: [businessInfoId], references: [id], onDelete: Cascade)
+  category       Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([businessInfoId, categoryId])
+}
