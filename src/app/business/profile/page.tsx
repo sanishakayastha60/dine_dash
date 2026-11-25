@@ -31,7 +31,7 @@ async function DashboardContent() {
     select: {
       id: true,
       name: true,
-      isVerfied: true,
+      isVerified: true,
     },
   });
 
@@ -39,7 +39,7 @@ async function DashboardContent() {
     redirect("/business/businessinfo");
   }
 
-  if (!business.isVerfied) {
+  if (!business.isVerified) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
         <div className="max-w-md rounded-xl bg-white p-8 text-center shadow-md">
