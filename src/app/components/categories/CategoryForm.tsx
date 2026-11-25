@@ -26,26 +26,35 @@ export default function CategoryManagement({
   );
 
   async function handleToggle(id: string) {
+    if (loadingId) return;
+
+    const previousCategories = categories;
+    setCategories((prev) =>
+      prev.map((category) =>
+        category.id === id
+          ? { ...category, isSelected: !category.isSelected }
+          : category,
+      ),
+    );
+
     setLoadingId(id);
     setMessage("");
 
-    const result = await toggleCategory(id);
+    try {
+      const result = await toggleCategory(id);
 
-    if (result.success) {
-      setCategories((prev) =>
-        prev.map((category) =>
-          category.id === id
-            ? { ...category, isSelected: !category.isSelected }
-            : category,
-        ),
-      );
-
-      setMessage(result.message);
-    } else {
-      setMessage(result.message);
+      if (!result.success) {
+        setCategories(previousCategories);
+        setMessage(result.message);
+      } else {
+        setMessage(result.message);
+      }
+    } catch (error) {
+      setCategories(previousCategories);
+      setMessage("Something went wrong. Please try again.");
+    } finally {
+      setLoadingId(null);
     }
-
-    setLoadingId(null);
   }
 
   return (
@@ -63,7 +72,7 @@ export default function CategoryManagement({
           <button
             key={category.id}
             type="button"
-            disabled={loadingId === category.id}
+            disabled={loadingId !== null}
             onClick={() => handleToggle(category.id)}
             className={`relative border rounded-lg p-4 text-left ${
               category.isSelected
@@ -74,17 +83,13 @@ export default function CategoryManagement({
             <h3 className="font-semibold">{category.name}</h3>
 
             <p className="text-sm text-gray-500 mt-1">{category.description}</p>
+
+            {loadingId === category.id && (
+              <p className="text-xs text-blue-600 mt-2">Saving...</p>
+            )}
             {category.isSelected && (
               <p className="absolute text-xs top-0 right-0 p-2">Selected</p>
             )}
-
-            {/* <p className="text-sm mt-3">
-              {loadingId === category.id
-                ? "Updating..."
-                : category.isSelected
-                  ? "Selected"
-                  : "Select category"}
-            </p> */}
           </button>
         ))}
       </div>
