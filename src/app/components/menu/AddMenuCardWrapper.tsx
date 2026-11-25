@@ -1,5 +1,6 @@
 import { getSelectedCategories } from "@/actions/CategoryAction";
 import AddMenuCard from "./AddMenuCard";
+import MenuList from "./MenuList";
 
 export default async function AddMenuCardWrapper() {
   const result = await getSelectedCategories();
@@ -15,5 +16,10 @@ export default async function AddMenuCardWrapper() {
     );
   }
 
-  return <AddMenuCard categories={result.categories} />;
+  return (
+    <div>
+      <AddMenuCard categories={result.categories} />
+      <MenuList />
+    </div>
+  );
 }

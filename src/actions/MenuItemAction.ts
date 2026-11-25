@@ -94,3 +94,63 @@ export async function createMenuItem(formData: FormData) {
     console.error(e);
   }
 }
+
+export async function getMenuItems() {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.id) {
+      return {
+        success: false,
+        message: "Unauthorized",
+        menuItems: [],
+      };
+    }
+
+    const business = await prisma.businessInfo.findFirst({
+      where: {
+        userId: session.user.id,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!business) {
+      return {
+        success: false,
+        message: "Business not found",
+        menuItems: [],
+      };
+    }
+    const menuItems = await prisma.menuItem.findMany({
+      where: {
+        businessId: business.id,
+      },
+      include: {
+        category: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return {
+      success: true,
+      menuItems,
+    };
+  } catch (error) {
+    console.error("Get menu items error:", error);
+
+    return {
+      success: false,
+      message: "Failed to fetch menu items",
+      menuItems: [],
+    };
+  }
+}
