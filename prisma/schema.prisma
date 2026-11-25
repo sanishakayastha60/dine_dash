@@ -104,7 +104,7 @@ model BusinessInfo {
   specialNotice String?
   coverUrl      String
   logoUrl       String
-  isVerfied Boolean @default(false)
+  isVerified Boolean @default(false)
   user User @relation(fields:[userId], references:[id], onDelete:Cascade)
 
   categories BusinessCategory[]
