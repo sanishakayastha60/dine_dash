@@ -3,6 +3,7 @@ import Category from "./components/Category";
 import RestroCard from "./components/RestaurantCard";
 import FoodItemCard from "./components/FoodItemCard";
 import Footer from "./components/Footer";
+import { getLandingPageMenuItems } from "@/actions/MenuItemAction";
 const categories = [
   {
     id: 1,
@@ -56,7 +57,8 @@ const categories = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const result = await getLandingPageMenuItems();
   return (
     <div>
       <main className="relative h-screen w-full bg-[url('/backgroundTable.png')] bg-cover bg-center bg-no-repeat px-8 px-16">
@@ -113,13 +115,24 @@ export default function Home() {
         <h2 className="text-center font-bold pb-4 text-3xl">
           Popular Food Items
         </h2>
-        <div className="flex flex-wrap justify-between gap-6">
-          <FoodItemCard />
-          <FoodItemCard />
-          <FoodItemCard />
-          <FoodItemCard />
-          <FoodItemCard />
-        </div>
+        {result.success && result.menuItems.length > 0 ? (
+          <div className="flex flex-wrap justify-center md:justify-between gap-6">
+            {result.menuItems.map((item) => (
+              <FoodItemCard
+                key={item.id}
+                name={item.name}
+                description={item.description}
+                price={item.price}
+                imageUrl={item.imageUrl}
+                restaurantName={item.business.name}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-gray-500">
+            No food items available yet.
+          </p>
+        )}
         <button className="bg-red-200 rounded-xl px-4 py-2 ">View More</button>
       </section>
       <section className="py-8 px-4 md:py-16 md:px-8">
