@@ -60,7 +60,6 @@ export default function Home() {
   return (
     <div>
       <main className="relative h-screen w-full bg-[url('/backgroundTable.png')] bg-cover bg-center bg-no-repeat px-8 px-16">
-        <Navbar />
         <div className="flex items-center min-h-screen">
           <div className="flex-1">
             <h1 className="text-white font-bold text-6xl">

@@ -1,8 +1,8 @@
 export default function FoodItemCard() {
   return (
-    <div className="w-64 outline rounded-2xl">
+    <div className="w-64 border-r border-b shadow-sm ">
       <div>
-        <img src="/bg.jfif" alt="" className="rounded-t-2xl " />
+        <img src="/bg.jfif" alt="" className="" />
       </div>
       <div className="p-2">
         <p className="text-sm text-gray-600">Paradise FoodLand</p>
