@@ -107,6 +107,7 @@ model BusinessInfo {
   isVerified Boolean @default(false)
   user User @relation(fields:[userId], references:[id], onDelete:Cascade)
 
+menuItems MenuItem[]
   categories BusinessCategory[]
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
@@ -120,10 +121,15 @@ model MenuItem {
   estimatedTime Int
   menuSection   MenuSection
   categoryId    String
+  businessId String
   imageUrl      String?
   category      Category    @relation(fields: [categoryId], references: [id])
+  business BusinessInfo @relation(fields:[businessId], references:[id])
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+
+  @@index([businessId])
+  @@index([categoryId])
 }
 
 model Category {

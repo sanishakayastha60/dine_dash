@@ -1,5 +1,6 @@
 "use server";
-
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -112,11 +113,28 @@ export async function toggleCategory(categoryId: string) {
 
 export async function getSelectedCategories() {
   try {
-    const business = await prisma.businessInfo.findFirst();
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.id) {
+      return {
+        success: false,
+        message: "Unauthorized",
+        categories: [],
+      };
+    }
+    const business = await prisma.businessInfo.findFirst({
+      where: {
+        userId: session.user.id,
+      },
+      select: {
+        id: true,
+      },
+    });
 
     if (!business) {
       return {
         success: false,
+        message: "Business not found",
         categories: [],
       };
     }
@@ -137,13 +155,20 @@ export async function getSelectedCategories() {
 
     return {
       success: true,
-      categories: selectedCategories.map((item) => item.category),
+      categories: selectedCategories.map((item) => ({
+        id: item.category.id,
+        name: item.category.name,
+        description: item.category.description,
+        imageUrl: item.category.imageUrl,
+        isSelected: true,
+      })),
     };
   } catch (error) {
     console.error(error);
 
     return {
       success: false,
+      message: "Failed to fetch categories",
       categories: [],
     };
   }

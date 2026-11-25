@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import ImageUploader from "../ImageUploader";
+import { createMenuItem } from "@/actions/MenuItemAction";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -28,10 +30,46 @@ const inputField =
   "rounded-md p-2 bg-white focus:outline-none focus:shadow-sm border";
 
 export default function AddMenuCard({ categories }: Props) {
+  const router = useRouter();
+
   const [foodImage, setFoodImage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [open, setOpen] = useState(false);
+
+  async function handleSubmit(formData: FormData) {
+    setLoading(true);
+    setMessage("");
+    formData.set("foodCategory", String(formData.get("categoryId") || ""));
+    formData.set("dishImage", foodImage);
+
+    try {
+      const result = await createMenuItem(formData);
+
+      if (!result) {
+        setMessage("Something went wrong. Please try again.");
+        return;
+      }
+
+      if (!result.success) {
+        setMessage(result.message);
+        return;
+      }
+
+      setMessage(result.message);
+      setFoodImage("");
+      setOpen(false);
+      router.refresh();
+    } catch (error) {
+      console.error("Menu creation failed:", error);
+      setMessage("Failed to create menu item.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         render={<Button variant="outline">Add Menu Item</Button>}
       />
@@ -41,7 +79,7 @@ export default function AddMenuCard({ categories }: Props) {
           <DialogTitle>Introduce a New Dish</DialogTitle>
         </DialogHeader>
 
-        <form className="flex flex-col gap-3">
+        <form className="flex flex-col gap-3" action={handleSubmit}>
           <div className="flex flex-col">
             <label className={labelField}>Dish Name</label>
             <input name="name" type="text" required className={inputField} />

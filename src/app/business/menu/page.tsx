@@ -1,9 +1,9 @@
 import AddMenuCardWrapper from "@/app/components/menu/AddMenuCardWrapper";
-export default function MenuManage() {
+import { Suspense } from "react";
+export default async function MenuManage() {
   return (
-    <div>
-      <div>Menu</div>
+    <Suspense fallback={<div>Loading Menu... </div>}>
       <AddMenuCardWrapper />
-    </div>
+    </Suspense>
   );
 }
