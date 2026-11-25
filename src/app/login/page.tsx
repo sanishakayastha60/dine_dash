@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -32,8 +32,19 @@ export default function LoginPage() {
       }
 
       if (result?.ok) {
-        router.push("/");
-        router.refresh();
+        const session = await getSession();
+        switch (session?.user?.role) {
+          case "USER":
+            router.replace("/");
+            break;
+
+          case "SUPERADMIN":
+            router.replace("/admin/dashboard");
+            break;
+
+          default:
+            router.replace("/login");
+        }
       }
     } catch {
       setError("Something went wrong");
