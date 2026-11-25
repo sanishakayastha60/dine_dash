@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 import MenuOpenSharpIcon from "@mui/icons-material/MenuOpenSharp";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
@@ -159,6 +160,7 @@ export default function Sidebar() {
             transition-colors
             ${!isOpen ? "justify-center" : ""}
           `}
+          onClick={() => signOut({ callbackUrl: "/business/login" })}
         >
           <LogoutOutlinedIcon sx={{ fontSize: 22, flexShrink: 0 }} />
           {isOpen && (
