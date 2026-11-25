@@ -99,6 +99,7 @@ async function BusinessSection() {
       {businesses.map((business) => (
         <RestroCard
           key={business.id}
+          id={business.id}
           name={business.name}
           description={business.description}
           address={business.address}
@@ -165,7 +166,13 @@ export default async function Home() {
         <h2 className="text-center font-bold pb-4 text-3xl">
           Popular Food Items
         </h2>
-        <Suspense fallback={<div>Loading Menu items...</div>}>
+        <Suspense
+          fallback={
+            <div>
+              <Skeleton />
+            </div>
+          }
+        >
           <MenuItemSection />
         </Suspense>
         <button className="bg-red-200 rounded-xl px-4 py-2 ">View More</button>

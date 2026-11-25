@@ -1,6 +1,7 @@
 "use client";
 
 type Props = {
+  id: string;
   name: string;
   description: string | null;
   address: string;
@@ -9,7 +10,10 @@ type Props = {
   logoUrl: string | null;
 };
 
+import { useRouter } from "next/navigation";
+
 export default function BusinessCard({
+  id,
   name,
   description,
   address,
@@ -17,9 +21,9 @@ export default function BusinessCard({
   coverUrl,
   logoUrl,
 }: Props) {
+  const router = useRouter();
   return (
     <div className="w-64 border rounded-xl shadow-sm overflow-hidden bg-white">
-      {/* Cover Image */}
       <div>
         <img
           src={coverUrl || "/bg.jfif"}
@@ -29,7 +33,6 @@ export default function BusinessCard({
       </div>
 
       <div className="p-3">
-        {/* Logo and Business Name */}
         <div className="flex items-center gap-2">
           {logoUrl && (
             <img
@@ -56,9 +59,11 @@ export default function BusinessCard({
         {/* Address */}
         <p className="text-sm text-gray-600 line-clamp-2">{address}</p>
 
-        {/* Verified Badge */}
         <div className="flex justify-between items-center mt-3">
-          <button className="bg-red-200 px-3 py-1 rounded-xl hover:bg-red-300 text-sm">
+          <button
+            onClick={() => router.push(`/info/${id}`)}
+            className="bg-red-200 px-3 py-1 rounded-xl hover:bg-red-300 text-sm"
+          >
             View Details
           </button>
         </div>
