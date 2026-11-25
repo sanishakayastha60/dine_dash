@@ -3,6 +3,10 @@ import Category from "./components/Category";
 import RestroCard from "./components/RestaurantCard";
 import FoodItemCard from "./components/FoodItemCard";
 import Footer from "./components/Footer";
+import { getLandingPageMenuItems } from "@/actions/MenuItemAction";
+import { getPublicBusinessInfo } from "@/actions/BusinessInfoAction";
+import { Suspense } from "react";
+import Skeleton from "./components/Skeleton";
 const categories = [
   {
     id: 1,
@@ -56,7 +60,58 @@ const categories = [
   },
 ];
 
-export default function Home() {
+async function MenuItemSection() {
+  const result = await getLandingPageMenuItems();
+  return (
+    <div>
+      {result.success && result.menuItems.length > 0 ? (
+        <div className="flex flex-wrap justify-center md:justify-between gap-6">
+          {result.menuItems.map((item) => (
+            <FoodItemCard
+              key={item.id}
+              name={item.name}
+              description={item.description}
+              price={item.price}
+              imageUrl={item.imageUrl}
+              restaurantName={item.business.name}
+            />
+          ))}
+        </div>
+      ) : (
+        <p className="text-center text-gray-500">
+          No food items available yet.
+        </p>
+      )}
+    </div>
+  );
+}
+async function BusinessSection() {
+  const result = await getPublicBusinessInfo();
+
+  const businesses = result.businesses;
+
+  if (!businesses.length) {
+    return <p className="text-gray-500">No businesses available.</p>;
+  }
+
+  return (
+    <div className="flex flex-wrap gap-5">
+      {businesses.map((business) => (
+        <RestroCard
+          key={business.id}
+          name={business.name}
+          description={business.description}
+          address={business.address}
+          businessType={business.businessType}
+          coverUrl={business.coverUrl}
+          logoUrl={business.logoUrl}
+        />
+      ))}
+    </div>
+  );
+}
+
+export default async function Home() {
   return (
     <div>
       <main className="relative h-screen w-full bg-[url('/backgroundTable.png')] bg-cover bg-center bg-no-repeat px-8 px-16">
@@ -101,25 +156,18 @@ export default function Home() {
         <h2 className="text-center font-bold pb-4 text-3xl">
           Explore the Restaurants
         </h2>
-        <div className="flex justify-between gap-6 flex-wrap">
-          <RestroCard />
-          <RestroCard />
-          <RestroCard />
-          <RestroCard />
-        </div>
+        <Suspense fallback={<Skeleton />}>
+          <BusinessSection />
+        </Suspense>
         <button className="bg-red-200 rounded-xl px-4 py-2 ">View More</button>
       </section>
       <section className="pt-8 px-4 md:pt-16 md:px-8">
         <h2 className="text-center font-bold pb-4 text-3xl">
           Popular Food Items
         </h2>
-        <div className="flex flex-wrap justify-between gap-6">
-          <FoodItemCard />
-          <FoodItemCard />
-          <FoodItemCard />
-          <FoodItemCard />
-          <FoodItemCard />
-        </div>
+        <Suspense fallback={<div>Loading Menu items...</div>}>
+          <MenuItemSection />
+        </Suspense>
         <button className="bg-red-200 rounded-xl px-4 py-2 ">View More</button>
       </section>
       <section className="py-8 px-4 md:py-16 md:px-8">

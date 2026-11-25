@@ -294,3 +294,41 @@ export async function updateBusinessVerification(
     };
   }
 }
+
+export async function getPublicBusinessInfo() {
+  try {
+    const businesses = await prisma.businessInfo.findMany({
+      where: {
+        isVerified: true,
+      },
+      take: 4,
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        address: true,
+        phoneNumber: true,
+        businessType: true,
+        coverUrl: true,
+        logoUrl: true,
+        specialNotice: true,
+        isVerified: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    return {
+      success: true,
+      businesses,
+    };
+  } catch (error) {
+    console.error("Get public businesses error:", error);
+
+    return {
+      success: false,
+      message: "Failed to retrieve businesses.",
+      businesses: [],
+    };
+  }
+}

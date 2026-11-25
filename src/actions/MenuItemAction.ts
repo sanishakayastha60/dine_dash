@@ -154,3 +154,44 @@ export async function getMenuItems() {
     };
   }
 }
+export async function getLandingPageMenuItems() {
+  try {
+    const menuItems = await prisma.menuItem.findMany({
+      where: {
+        business: {
+          isVerified: true,
+        },
+      },
+      take: 6,
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        category: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        business: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    return {
+      success: true,
+      menuItems,
+    };
+  } catch (error) {
+    console.error("Landing page menu error:", error);
+
+    return {
+      success: false,
+      menuItems: [],
+    };
+  }
+}
