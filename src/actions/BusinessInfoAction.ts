@@ -332,3 +332,55 @@ export async function getPublicBusinessInfo() {
     };
   }
 }
+
+export async function getPublicBusinessById(id: string) {
+  try {
+    if (!id?.trim()) {
+      return {
+        success: false,
+        message: "Invalid business ID.",
+        business: null,
+      };
+    }
+
+    const business = await prisma.businessInfo.findFirst({
+      where: {
+        id,
+        isVerified: true,
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        address: true,
+        phoneNumber: true,
+        businessType: true,
+        coverUrl: true,
+        logoUrl: true,
+        specialNotice: true,
+        isVerified: true,
+      },
+    });
+
+    if (!business) {
+      return {
+        success: false,
+        message: "Business not found.",
+        business: null,
+      };
+    }
+
+    return {
+      success: true,
+      business,
+    };
+  } catch (error) {
+    console.error("Get business details error:", error);
+
+    return {
+      success: false,
+      message: "Failed to retrieve business details.",
+      business: null,
+    };
+  }
+}

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import Navbar from "./components/Navbar";
 import Category from "./components/Category";
 import RestroCard from "./components/RestaurantCard";
@@ -99,6 +101,7 @@ async function BusinessSection() {
       {businesses.map((business) => (
         <RestroCard
           key={business.id}
+          id={business.id}
           name={business.name}
           description={business.description}
           address={business.address}
@@ -159,13 +162,26 @@ export default async function Home() {
         <Suspense fallback={<Skeleton />}>
           <BusinessSection />
         </Suspense>
-        <button className="bg-red-200 rounded-xl px-4 py-2 ">View More</button>
+        <div className="flex flex-col items-center mt-8">
+          <Link
+            href="/allBusiness"
+            className="bg-red-500 text-white px-6 py-2 rounded-xl hover:bg-red-600 transition"
+          >
+            View More Businesses →
+          </Link>
+        </div>
       </section>
       <section className="pt-8 px-4 md:pt-16 md:px-8">
         <h2 className="text-center font-bold pb-4 text-3xl">
           Popular Food Items
         </h2>
-        <Suspense fallback={<div>Loading Menu items...</div>}>
+        <Suspense
+          fallback={
+            <div>
+              <Skeleton />
+            </div>
+          }
+        >
           <MenuItemSection />
         </Suspense>
         <button className="bg-red-200 rounded-xl px-4 py-2 ">View More</button>
