@@ -36,27 +36,27 @@ const categories = [
   {
     id: 6,
     name: "Keema Noodles",
-    url: "",
+    url: "/pizza.jfif",
   },
   {
     id: 7,
     name: "Tea",
-    url: "",
+    url: "/pizza.jfif",
   },
   {
     id: 8,
     name: "Sekuwa",
-    url: "",
+    url: "/pizza.jfif",
   },
   {
     id: 9,
     name: "Biryani",
-    url: "",
+    url: "/pizza.jfif",
   },
   {
     id: 10,
     name: "Desserts",
-    url: "",
+    url: "/pizza.jfif",
   },
 ];
 
