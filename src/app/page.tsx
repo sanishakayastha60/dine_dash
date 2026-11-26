@@ -167,7 +167,7 @@ export default async function Home() {
             href="/allBusiness"
             className="bg-red-500 text-white px-6 py-2 rounded-xl hover:bg-red-600 transition"
           >
-            View More Businesses →
+            View More Businesses
           </Link>
         </div>
       </section>
@@ -184,7 +184,14 @@ export default async function Home() {
         >
           <MenuItemSection />
         </Suspense>
-        <button className="bg-red-200 rounded-xl px-4 py-2 ">View More</button>
+        <div className="flex flex-col items-center mt-8">
+          <Link
+            href="/allFoodItem"
+            className="bg-red-500 text-white px-6 py-2 rounded-xl hover:bg-red-600 transition"
+          >
+            View More Food Items
+          </Link>
+        </div>
       </section>
       <section className="py-8 px-4 md:py-16 md:px-8">
         <div className="w-full bg-black text-white py-8 px-4 flex flex-col justify-between items-center rounded-xl md:flex-row">

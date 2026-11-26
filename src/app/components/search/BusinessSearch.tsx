@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import RestroCard from "./RestaurantCard";
+import RestroCard from "../RestaurantCard";
 import { SearchIcon } from "lucide-react";
 
 interface Business {
