@@ -195,3 +195,47 @@ export async function getLandingPageMenuItems() {
     };
   }
 }
+
+export async function getAllPublicMenuItems() {
+  try {
+    const menuItems = await prisma.menuItem.findMany({
+      where: {
+        business: {
+          isVerified: true,
+        },
+      },
+      include: {
+        category: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        business: {
+          select: {
+            id: true,
+            name: true,
+            address: true,
+            logoUrl: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return {
+      success: true,
+      menuItems,
+    };
+  } catch (error) {
+    console.error("Get all public menu items error:", error);
+
+    return {
+      success: false,
+      message: "Failed to fetch food items.",
+      menuItems: [],
+    };
+  }
+}

@@ -1,6 +1,6 @@
 import { getPublicBusinessInfo } from "@/actions/BusinessInfoAction";
 import Link from "next/link";
-import Search from "../components/Search";
+import Search from "../components/search/BusinessSearch";
 
 export default async function AllBusinessesPage() {
   const result = await getPublicBusinessInfo();
