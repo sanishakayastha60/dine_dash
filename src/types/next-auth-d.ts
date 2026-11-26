@@ -6,6 +6,8 @@ declare module "next-auth" {
       id: string;
       role: "USER" | "BUSINESS" | "SUPERADMIN";
     } & DefaultSession["user"];
+    name?: string | null;
+    email?: string | null;
   }
 }
 

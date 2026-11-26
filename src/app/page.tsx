@@ -71,6 +71,7 @@ async function MenuItemSection() {
           {result.menuItems.map((item) => (
             <FoodItemCard
               key={item.id}
+              id={item.id}
               name={item.name}
               description={item.description}
               price={item.price}
@@ -117,6 +118,7 @@ async function BusinessSection() {
 export default async function Home() {
   return (
     <div>
+      <Navbar />
       <main className="relative h-screen w-full bg-[url('/backgroundTable.png')] bg-cover bg-center bg-no-repeat px-8 px-16">
         <div className="flex items-center min-h-screen">
           <div className="flex-1">
