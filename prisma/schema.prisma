@@ -47,6 +47,7 @@ model User {
 
   accounts Account[]
   sessions Session[]
+  cart Cart?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -107,7 +108,7 @@ model BusinessInfo {
   isVerified Boolean @default(false)
   user User @relation(fields:[userId], references:[id], onDelete:Cascade)
 
-menuItems MenuItem[]
+  menuItems MenuItem[]
   categories BusinessCategory[]
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
@@ -117,14 +118,18 @@ model MenuItem {
   id            String      @id @default(uuid())
   name          String
   description   String?
-  price         Float
+  price         Decimal @db.Decimal(10,2)
   estimatedTime Int
   menuSection   MenuSection
+  isAvailable Boolean @default(true)
+
   categoryId    String
   businessId String
+
   imageUrl      String?
   category      Category    @relation(fields: [categoryId], references: [id])
-  business BusinessInfo @relation(fields:[businessId], references:[id])
+  business BusinessInfo @relation(fields:[businessId], references:[id], onDelete:Cascade)
+  cartItems CartItem[]
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
@@ -152,4 +157,29 @@ model BusinessCategory {
   category       Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@unique([businessInfoId, categoryId])
+}
+
+model Cart{
+  id String @id @default(uuid())
+  userId String @unique
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+  items CartItem[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CartItem{
+  id String @id @default(uuid())
+  cartId String
+  menuItemId String
+  quantity Int @default(1)
+
+  cart Cart @relation(fields:[cartId], references:[id], onDelete:Cascade)
+  menuItem MenuItem @relation(fields:[menuItemId], references:[id], onDelete:Cascade)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([cartId, menuItemId])
+  @@index([menuItemId])
 }

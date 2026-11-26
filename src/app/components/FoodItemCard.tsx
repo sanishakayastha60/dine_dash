@@ -1,8 +1,10 @@
 "use client";
 
+import { useCart } from "@/context/CardContext";
 import { useState } from "react";
 
 type Props = {
+  id: string;
   name: string;
   description: string | null;
   price: number;
@@ -11,14 +13,39 @@ type Props = {
 };
 
 export default function FoodItemCard({
+  id,
   name,
   description,
   price,
   imageUrl,
   restaurantName,
 }: Props) {
-  const [quantity, setQuantity] = useState(0);
+  const { cart, addToCart, updateQuantity } = useCart();
 
+  const [processing, setProcessing] = useState(false);
+  const cartItem = cart.find((item) => item.menuItemId === id);
+  const quantity = cartItem?.quantity ?? 0;
+  const handleAdd = async () => {
+    try {
+      setProcessing(true);
+      await addToCart(id);
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "Something went wrong");
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const handleQuantity = async (newQuantity: number) => {
+    try {
+      setProcessing(true);
+      await updateQuantity(id, newQuantity);
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "Something went wrong");
+    } finally {
+      setProcessing(false);
+    }
+  };
   return (
     <div className="w-64 border rounded-xl shadow-sm overflow-hidden bg-white">
       <div>
@@ -45,15 +72,17 @@ export default function FoodItemCard({
 
           {quantity === 0 ? (
             <button
-              onClick={() => setQuantity(1)}
-              className="bg-red-200 px-4 py-1 rounded-xl hover:bg-red-300"
+              onClick={handleAdd}
+              disabled={processing}
+              className="bg-red-200 px-4 py-1 rounded-xl hover:bg-red-300 disabled:opacity-50"
             >
-              Add
+              {processing ? "Adding..." : "Add"}
             </button>
           ) : (
             <div className="flex items-center gap-3 bg-red-100 rounded-xl px-2 py-1">
               <button
-                onClick={() => setQuantity((prev) => Math.max(0, prev - 1))}
+                disabled={processing}
+                onClick={() => handleQuantity(quantity - 1)}
                 className="font-bold text-lg px-1"
               >
                 −
@@ -62,7 +91,8 @@ export default function FoodItemCard({
               <span className="font-semibold">{quantity}</span>
 
               <button
-                onClick={() => setQuantity((prev) => prev + 1)}
+                disabled={processing}
+                onClick={() => handleQuantity(quantity + 1)}
                 className="font-bold text-lg px-1"
               >
                 +
