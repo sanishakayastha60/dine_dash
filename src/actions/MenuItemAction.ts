@@ -142,7 +142,10 @@ export async function getMenuItems() {
 
     return {
       success: true,
-      menuItems,
+      menuItems: menuItems.map((item) => ({
+        ...item,
+        price: item.price.toString(),
+      })),
     };
   } catch (error) {
     console.error("Get menu items error:", error);
@@ -184,7 +187,10 @@ export async function getLandingPageMenuItems() {
 
     return {
       success: true,
-      menuItems,
+      menuItems: menuItems.map((item) => ({
+        ...item,
+        price: item.price.toString(),
+      })),
     };
   } catch (error) {
     console.error("Landing page menu error:", error);
@@ -227,7 +233,10 @@ export async function getAllPublicMenuItems() {
 
     return {
       success: true,
-      menuItems,
+      menuItems: menuItems.map((item) => ({
+        ...item,
+        price: item.price.toString(),
+      })),
     };
   } catch (error) {
     console.error("Get all public menu items error:", error);
