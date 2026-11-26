@@ -83,7 +83,7 @@ export default async function BusinessDetailsPage({ params }: Props) {
             <div className="space-y-4">
               <div>
                 <p className="text-sm text-gray-500">Address</p>
-                <p className="font-medium">📍 {business.address}</p>
+                <p className="font-medium"> {business.address}</p>
               </div>
 
               <div>

@@ -28,12 +28,12 @@ export const authOptions: NextAuthOptions = {
           if (!credentials?.identifier || !credentials?.password) {
             return null;
           }
-          const identifier = credentials?.identifier.trim().toLowerCase;
+          const identifier = credentials?.identifier.trim().toLowerCase();
 
           const user = await prisma.user.findFirst({
             where: {
               email: {
-                equals: "identifier",
+                equals: identifier,
                 mode: "insensitive",
               },
             },
